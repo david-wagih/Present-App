@@ -23,7 +23,7 @@ const Home = () => {
 
   const getCode = async () => {
     await axios
-      .get("http://localhost:8000/verify/getcode", {
+      .get("http://localhost:3000/api/getCode", {
         params: {
           phonenumber: formValues.phone,
           channel: "sms",
@@ -35,7 +35,7 @@ const Home = () => {
 
   const verifyCode = async () => {
     await axios
-      .get("http://localhost:8000/verify/verifycode", {
+      .get("http://localhost:3000/api/verifyCode", {
         params: {
           phonenumber: formValues.phone,
           code: otp,
@@ -126,7 +126,7 @@ const Home = () => {
           )}
           <button
             type="submit"
-            className="rounded-full w-32 p-1 mx-auto my-2"
+            className="border-2 w-[60%] mx-auto border-black rounded hover:cursor-pointer hover:bg-[#ff8ba7] hover:text-[#33272a] p-1 my-1"
             onClick={(e) => {
               e.preventDefault();
               console.log(formValues);

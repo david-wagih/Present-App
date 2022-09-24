@@ -1,27 +1,28 @@
 import React, { useEffect, useState } from "react";
+import { useRouter } from 'next/router'
 import axios from "axios";
 import Image from 'next/image'
 import { motion } from 'framer-motion';
 
 const Home = () => {
+  const router = useRouter();
   const [formStep, setFormStep] = useState(1);
   const [otp, setOtp] = useState("");
   const [otpShow, setOtpShow] = useState(false);
   const [status, setStatus] = useState(false);
-  const [role, setRole] = useState("student");
   const [formValues, setFormValues] = useState({
     name: "",
     email: "",
     phone: "",
-    role: role,
+    role: "",
     course: ""
   });
 
-  const handleNext = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setRole(e.currentTarget.value);
+  const handleNext = (e: any) => {
+    setFormValues({ ...formValues, role: e.target.value })
     setFormStep(formStep + 1);
   };
-  const handlePrev = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handlePrev = (e: any) => {
     setOtpShow(!otpShow);
     setFormStep(formStep - 1);
   };
@@ -50,32 +51,36 @@ const Home = () => {
         console.log(data);
         if (data.data.status === "approved") {
           setStatus(true);
+          router.push(`/${formValues.role}`);
         }
+        else setStatus(false);
       })
       .catch((err) => console.log(err));
   };
 
   const Step1 = () => {
     return (
-      <motion.div animate={{ y: -10 }} transition={{ ease: "easeIn", duration: 0.2}} className="flex min-h-[60vh] flex-col items-center border-2 rounded m-2 p-4 w-[50vw] justify-around">
-        <h1 className="text-3xl font-semibold my-2 ">
+      <motion.div animate={{ y: -10 }} transition={{ ease: "easeIn", duration: 0.2 }} className="flex min-h-[60vh] flex-col items-center border-2 rounded m-2 p-4 w-[50vw] justify-around">
+        <h1 className="text-3xl font-semibold my-2">
           Are you a Student or a Teacher?
         </h1>
         <div className="flex flex-col justify-center w-full">
-          <button
+          <motion.button whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
             value="student"
             onClick={handleNext}
             className="border-2 w-[60%] mx-auto border-black rounded hover:cursor-pointer hover:bg-[#ff8ba7] hover:text-[#33272a] p-2 my-1"
           >
             Continue as a Student
-          </button>
-          <button
+          </motion.button>
+          <motion.button whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
             value="teacher"
             onClick={handleNext}
             className="border-2 w-[60%] mx-auto border-black rounded hover:cursor-pointer hover:bg-[#ff8ba7] hover:text-[#33272a] p-2 my-1"
           >
             Continue as a Teacher
-          </button>
+          </motion.button>
         </div>
       </motion.div>
     );
@@ -89,12 +94,13 @@ const Home = () => {
         </h1>
         <h2 className="my-2">Say goodbye to those bulky registers!</h2>
       </div>
+
       <div className="flex mt-12 justify-center">
         {formStep === 1 && <Step1 />}
         {formStep === 2 && (
           <motion.div animate={{ y: -10 }} transition={{ ease: "easeIn", duration: 0.2 }} className="flex items-center flex-col border-2 rounded m-2 p-4 w-[50vw] justify-center">
             <h1 className="text-3xl font-semibold my-2 capitalize">
-              Voila, {role}s 😁!
+              Voila, {formValues.role}s 👋!
             </h1>
             <form className="flex w-full flex-col p-2 items-start justify-center">
               <label className="my-2">
@@ -122,7 +128,7 @@ const Home = () => {
                 />
               </label>
               <label className="my-2">
-                {role=="student" ? "Enrolled Course Code" : "Course You Teach"}
+                {formValues.role == "student" ? "Enrolled Course Code" : "Course You Teach"}
                 <input
                   value={formValues.course}
                   onChange={(e) =>
@@ -158,7 +164,8 @@ const Home = () => {
                   />
                 </label>
               )}
-              <button
+              <motion.button whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
                 type="submit"
                 className="border-2 w-[40%] mx-auto border-black rounded hover:cursor-pointer hover:bg-[#ff8ba7] hover:text-[#33272a] p-1 my-1"
                 onClick={(e) => {
@@ -174,25 +181,39 @@ const Home = () => {
                 }}
               >
                 Verify
-              </button>
+              </motion.button>
 
-              {otpShow && (
+
+              {otpShow ? (
                 <p className="text-xs m-2">
                   An OTP has been sent on {formValues.phone}
                 </p>
-              )}
+              ) : (<motion.button whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                type="submit"
+                className="border-2 w-[40%] mx-auto border-black rounded hover:cursor-pointer hover:bg-[#ff8ba7] hover:text-[#33272a] p-1 my-1"
+                onClick={(e) => {
+                  e.preventDefault();
+                  console.log(formValues);
+                  getCode();
+                  setOtpShow(true);
+                }}
+              >
+                Resend Code
+              </motion.button>)}
               <p className="text-xs m-2">
                 By tapping Verify an SMS may be sent. Message & data rates may
                 apply.
               </p>
             </form>
-            <button
+            <motion.button whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
               className="border-2 w-[40%] mx-auto border-black rounded hover:cursor-pointer hover:bg-[#ff8ba7] hover:text-[#33272a] p-1 my-1"
               onClick={handlePrev}
             >
               Go Back!
-            </button>
-            {status}
+            </motion.button>
+            {status && "Approved!"}
           </motion.div>
         )}
       </div>

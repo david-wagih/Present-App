@@ -4,7 +4,7 @@ import Navbar from '../components/Navbar'
 
 const Home: NextPage = () => {
   return (
-    <div className="bg-[#faeee7] text-[#33272a] h-screen">
+    <div className="bg-[#faeee7] text-[#33272a] min-h-screen">
       <Navbar />
       <Hero />
     </div>

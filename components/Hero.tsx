@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Image from 'next/image'
+import { motion } from 'framer-motion';
 
 const Home = () => {
   const [formStep, setFormStep] = useState(1);
@@ -18,6 +20,7 @@ const Home = () => {
     setFormStep(formStep + 1);
   };
   const handlePrev = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setOtpShow(!otpShow);
     setFormStep(formStep - 1);
   };
 
@@ -52,7 +55,7 @@ const Home = () => {
 
   const Step1 = () => {
     return (
-      <div className="flex flex-col items-center border-2 rounded m-2 p-4 w-[50vw] justify-around">
+      <motion.div animate={{ y: -10 }} transition={{ ease: "easeIn", duration: 0.2}} className="flex min-h-[60vh] flex-col items-center border-2 rounded m-2 p-4 w-[50vw] justify-around">
         <h1 className="text-3xl font-semibold my-2 ">
           Are you a Student or a Teacher?
         </h1>
@@ -72,112 +75,26 @@ const Home = () => {
             Continue as a Teacher
           </button>
         </div>
-      </div>
-    );
-  };
-
-  const Step2 = ({ role }: any) => {
-    return (
-      <div className="flex flex-col border-2 rounded m-2 p-4 w-[50vw] justify-center">
-        <h1 className="text-3xl font-semibold my-2 capitalize">
-          Voila, {role}s 😁!
-        </h1>
-        <form className="flex flex-col items-start justify-center">
-          <label className="my-2">
-            Name
-            <input
-              className="focus:outline-none px-2 w-[60%] py-1 ml-2 rounded"
-              type="text"
-              placeholder="Enter your Name"
-            />
-          </label>
-          <label className="my-2">
-            Email
-            <input
-              className="focus:outline-none px-2 w-[60%] py-1 ml-2 rounded"
-              type="email"
-              placeholder="Enter your Email"
-            />
-          </label>
-          <label className="flex flex-col">
-            Enter your Phone Number in E. 164 format -
-            <input
-              type="text"
-              value={formValues.phone}
-              onChange={(e) =>
-                setFormValues({ ...formValues, phone: e.target.value })
-              }
-              className="rounded-md bg-[#D9D9D9] focus:outline-none p-2 m-2"
-              required
-              placeholder="eg: 91-725-029-1234"
-            />
-          </label>
-          {otpShow && (
-            <label className="flex flex-col">
-              Enter OTP -
-              <input
-                type="text"
-                value={otp}
-                onChange={(e) => setOtp(e.target.value)}
-                className="rounded-md bg-[#D9D9D9] focus:outline-none p-2 m-2"
-                placeholder="eg: 322454"
-              />
-            </label>
-          )}
-          <button
-            type="submit"
-            className="border-2 w-[60%] mx-auto border-black rounded hover:cursor-pointer hover:bg-[#ff8ba7] hover:text-[#33272a] p-1 my-1"
-            onClick={(e) => {
-              e.preventDefault();
-              console.log(formValues);
-
-              if (otpShow) {
-                verifyCode();
-              } else {
-                getCode();
-                setOtpShow(true);
-              }
-            }}
-          >
-            Verify
-          </button>
-
-          {otpShow && (
-            <p className="text-xs m-2">
-              An OTP has been sent on {formValues.phone}
-            </p>
-          )}
-          <p className="text-xs m-2">
-            By tapping Verify an SMS may be sent. Message & data rates may
-            apply.
-          </p>
-        </form>
-        <button
-          className="border-2 w-[60%] mx-auto border-black rounded hover:cursor-pointer hover:bg-[#ff8ba7] hover:text-[#33272a] p-1 my-1"
-          onClick={handlePrev}
-        >
-          Go Back!
-        </button>
-      </div>
+      </motion.div>
     );
   };
 
   return (
-    <div className="h-[88vh] ml-6">
+    <div className="ml-6">
       <div className="text-[#33272a] flex flex-col items-center justify-center w-full">
         <h1 className="text-3xl font-semibold">
           Welcome to QR Code-based Attendance System
         </h1>
         <h2 className="my-2">Say goodbye to those bulky registers!</h2>
       </div>
-      <div className="flex mt-12 justify-center h-[60vh]">
+      <div className="flex mt-12 justify-center">
         {formStep === 1 && <Step1 />}
         {formStep === 2 && (
-          <div className="flex flex-col border-2 rounded m-2 p-4 w-[50vw] justify-center">
+          <motion.div animate={{ y: -10 }} transition={{ ease: "easeIn", duration: 0.2 }} className="flex items-center flex-col border-2 rounded m-2 p-4 w-[50vw] justify-center">
             <h1 className="text-3xl font-semibold my-2 capitalize">
               Voila, {role}s 😁!
             </h1>
-            <form className="flex flex-col items-start justify-center">
+            <form className="flex flex-col p-2 items-start justify-center">
               <label className="my-2">
                 Name
                 <input
@@ -185,7 +102,7 @@ const Home = () => {
                   onChange={(e) =>
                     setFormValues({ ...formValues, name: e.target.value })
                   }
-                  className="focus:outline-none px-2 w-[60%] py-1 ml-2 rounded"
+                  className="focus:outline-none px-2 py-1 ml-2 rounded mb-1"
                   type="text"
                   placeholder="Enter your Name"
                 />
@@ -197,39 +114,39 @@ const Home = () => {
                   onChange={(e) =>
                     setFormValues({ ...formValues, email: e.target.value })
                   }
-                  className="focus:outline-none px-2 w-[60%] py-1 ml-2 rounded"
+                  className="focus:outline-none px-2 py-1 ml-2 rounded mb-1"
                   type="email"
                   placeholder="Enter your Email"
                 />
               </label>
-              <label className="flex flex-col">
-                Enter your Phone Number in E. 164 format -
+              <label className="flex flex-col mt-1">
+                Enter your Phone Number in E. 164 format
                 <input
                   type="text"
                   value={formValues.phone}
                   onChange={(e) =>
                     setFormValues({ ...formValues, phone: e.target.value })
                   }
-                  className="rounded-md bg-[#D9D9D9] focus:outline-none p-2 m-2"
+                  className="focus:outline-none px-2 py-1 ml-2 rounded mb-1"
                   required
                   placeholder="eg: 91-725-029-1234"
                 />
               </label>
               {otpShow && (
-                <label className="flex flex-col">
-                  Enter OTP -
+                <label className="flex flex-col mt-1">
+                  Enter OTP
                   <input
                     type="text"
                     value={otp}
                     onChange={(e) => setOtp(e.target.value)}
-                    className="rounded-md bg-[#D9D9D9] focus:outline-none p-2 m-2"
+                    className="focus:outline-none px-2 py-1 ml-2 rounded mb-1"
                     placeholder="eg: 322454"
                   />
                 </label>
               )}
               <button
                 type="submit"
-                className="rounded-full w-32 p-1 mx-auto my-2"
+                className="border-2 w-[60%] mx-auto border-black rounded hover:cursor-pointer hover:bg-[#ff8ba7] hover:text-[#33272a] p-1 my-1"
                 onClick={(e) => {
                   e.preventDefault();
                   console.log(formValues);
@@ -256,12 +173,13 @@ const Home = () => {
               </p>
             </form>
             <button
-              className="border-2 w-[60%] mx-auto border-black rounded hover:cursor-pointer hover:bg-[#ff8ba7] hover:text-[#33272a] p-1 my-1"
+              className="border-2 w-[40%] mx-auto border-black rounded hover:cursor-pointer hover:bg-[#ff8ba7] hover:text-[#33272a] p-1 my-1"
               onClick={handlePrev}
             >
               Go Back!
             </button>
-          </div>
+            {status}
+          </motion.div>
         )}
       </div>
     </div>

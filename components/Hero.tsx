@@ -5,15 +5,17 @@ import { motion } from 'framer-motion';
 
 const Home = () => {
   const [formStep, setFormStep] = useState(1);
-  const [formValues, setFormValues] = useState({
-    name: "",
-    email: "",
-    phone: "",
-  });
   const [otp, setOtp] = useState("");
   const [otpShow, setOtpShow] = useState(false);
   const [status, setStatus] = useState(false);
   const [role, setRole] = useState("student");
+  const [formValues, setFormValues] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    role: role,
+    course: ""
+  });
 
   const handleNext = (e: React.MouseEvent<HTMLButtonElement>) => {
     setRole(e.currentTarget.value);
@@ -94,7 +96,7 @@ const Home = () => {
             <h1 className="text-3xl font-semibold my-2 capitalize">
               Voila, {role}s 😁!
             </h1>
-            <form className="flex flex-col p-2 items-start justify-center">
+            <form className="flex w-full flex-col p-2 items-start justify-center">
               <label className="my-2">
                 Name
                 <input
@@ -102,7 +104,7 @@ const Home = () => {
                   onChange={(e) =>
                     setFormValues({ ...formValues, name: e.target.value })
                   }
-                  className="focus:outline-none px-2 py-1 ml-2 rounded mb-1"
+                  className="focus:outline-none px-2 py-1 ml-4 w-64 border-black rounded mb-1 border"
                   type="text"
                   placeholder="Enter your Name"
                 />
@@ -114,12 +116,24 @@ const Home = () => {
                   onChange={(e) =>
                     setFormValues({ ...formValues, email: e.target.value })
                   }
-                  className="focus:outline-none px-2 py-1 ml-2 rounded mb-1"
+                  className="focus:outline-none px-2 py-1 ml-4 w-64 border-black rounded mb-1 border"
                   type="email"
                   placeholder="Enter your Email"
                 />
               </label>
-              <label className="flex flex-col mt-1">
+              <label className="my-2">
+                {role=="student" ? "Enrolled Course Code" : "Course You Teach"}
+                <input
+                  value={formValues.course}
+                  onChange={(e) =>
+                    setFormValues({ ...formValues, course: e.target.value })
+                  }
+                  className="focus:outline-none px-2 py-1 ml-4 w-64 border-black rounded mb-1 border"
+                  type="text"
+                  placeholder="Enter your Course Code"
+                />
+              </label>
+              <label className="my-2">
                 Enter your Phone Number in E. 164 format
                 <input
                   type="text"
@@ -127,26 +141,26 @@ const Home = () => {
                   onChange={(e) =>
                     setFormValues({ ...formValues, phone: e.target.value })
                   }
-                  className="focus:outline-none px-2 py-1 ml-2 rounded mb-1"
+                  className="focus:outline-none px-2 py-1 ml-4 w-64 border-black rounded mb-1 border"
                   required
                   placeholder="eg: 91-725-029-1234"
                 />
               </label>
               {otpShow && (
-                <label className="flex flex-col mt-1">
+                <label className="my-2">
                   Enter OTP
                   <input
                     type="text"
                     value={otp}
                     onChange={(e) => setOtp(e.target.value)}
-                    className="focus:outline-none px-2 py-1 ml-2 rounded mb-1"
+                    className="focus:outline-none px-2 py-1 ml-4 w-64 border-black rounded mb-1 border"
                     placeholder="eg: 322454"
                   />
                 </label>
               )}
               <button
                 type="submit"
-                className="border-2 w-[60%] mx-auto border-black rounded hover:cursor-pointer hover:bg-[#ff8ba7] hover:text-[#33272a] p-1 my-1"
+                className="border-2 w-[40%] mx-auto border-black rounded hover:cursor-pointer hover:bg-[#ff8ba7] hover:text-[#33272a] p-1 my-1"
                 onClick={(e) => {
                   e.preventDefault();
                   console.log(formValues);

@@ -1,5 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
+// URL: http://localhost:3000/api/getCode?phonenumber=+1xxxxxxxxxx&channel=sms
+
 const client = require("twilio")(
   process.env.ACCOUNT_SID,
   process.env.AUTH_TOKEN

@@ -179,9 +179,7 @@ const Home = () => {
                     setOtpShow(true);
                   }
                 }}
-              >
-                Verify
-              </motion.button>
+              >Verify</motion.button>
 
 
               {otpShow ? (

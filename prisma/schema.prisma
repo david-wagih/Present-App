@@ -20,27 +20,30 @@ model student {
 }
 
 model teacher {
-  id     Int      @id @default(autoincrement())
-  name   String
-  email  String   @unique
-  phone  String   @unique
-  course course[]
+  id         Int          @id @default(autoincrement())
+  name       String
+  email      String       @unique
+  phone      String       @unique
+  course     course[]
+  attendance attendance[]
 }
 
 model course {
   id         Int          @id @default(autoincrement())
   name       String
-  teacherId  Int
-  teacher    teacher      @relation(fields: [teacherId], references: [id])
+  teacherId  Int?
+  teacher    teacher?     @relation(fields: [teacherId], references: [id])
   students   student[]
   attendance attendance[]
 }
 
 model attendance {
   id        Int      @id @default(autoincrement())
+  teacherId Int
   studentId Int
   courseId  Int
   date      DateTime
   student   student  @relation(fields: [studentId], references: [id])
+  teacher   teacher  @relation(fields: [teacherId], references: [id])
   course    course   @relation(fields: [courseId], references: [id])
 }

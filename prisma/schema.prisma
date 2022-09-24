@@ -30,7 +30,7 @@ model teacher {
 
 model course {
   id         Int          @id @default(autoincrement())
-  name       String
+  name       String       @unique
   teacherId  Int?
   teacher    teacher?     @relation(fields: [teacherId], references: [id])
   students   student[]

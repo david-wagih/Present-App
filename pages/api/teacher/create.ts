@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
 
-// htto://localhost:3000/api/teacher/create
+// http://localhost:3000/api/teacher/create
 
 const createNewTeacher = async (req: NextApiRequest, res: NextApiResponse) => {
   try {

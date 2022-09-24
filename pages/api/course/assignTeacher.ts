@@ -8,11 +8,11 @@ const assignTeacherToCourse = async (
   res: NextApiResponse
 ) => {
   try {
-    const courseId = req.body.courseId;
+    const courseCode = req.body.courseCode;
     const teacherId = req.body.teacherId;
 
     const course = await prisma.course.update({
-      where: { id: courseId },
+      where: { name: courseCode },
       data: {
         teacher: {
           connect: {

@@ -40,9 +40,7 @@ const Student = (
 
           <ul className="flex flex-col m-2">
             <h2>Here are your enrolled courses:</h2>
-            <li>ENG 101</li>
-            <li>ENG 101</li>
-            <li>ENG 101</li>
+            <li className="p-2">{student.course.name}</li>
           </ul>
 
           <div className="flex flex-col m-2">

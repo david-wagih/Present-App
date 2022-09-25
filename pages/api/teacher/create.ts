@@ -17,7 +17,7 @@ const createNewTeacher = async (req: NextApiRequest, res: NextApiResponse) => {
       },
     });
     if (newTeacher) {
-      res.status(200).json({ message: "Teacher created successfully" });
+      res.status(200).json(newTeacher);
     } else {
       res.status(400).json({ message: "Teacher not created" });
     }

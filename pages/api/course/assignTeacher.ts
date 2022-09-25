@@ -14,11 +14,7 @@ const assignTeacherToCourse = async (
     const course = await prisma.course.update({
       where: { name: courseCode },
       data: {
-        teacher: {
-          connect: {
-            id: teacherId,
-          },
-        },
+        teacherId: teacherId,
       },
     });
     if (course) {

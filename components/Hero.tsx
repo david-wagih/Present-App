@@ -28,79 +28,81 @@ const Home = () => {
   };
 
   const getCode = async () => {
-    await axios
-      .get("http://localhost:3000/api/getCode", {
-        params: {
-          phonenumber: formValues.phone,
-          channel: "sms",
-        },
-      })
-      .then((data) => console.log(data))
-      .catch((err) => console.log(err));
+    // await axios
+    //   .get("http://localhost:3000/api/getCode", {
+    //     params: {
+    //       phonenumber: formValues.phone,
+    //       channel: "sms",
+    //     },
+    //   })
+    //   .then((data) => console.log(data))
+    //   .catch((err) => console.log(err));
   };
 
   const verifyCode = async () => {
-    await axios
-      .get("http://localhost:3000/api/verifyCode", {
-        params: {
-          phonenumber: formValues.phone,
-          code: otp,
+    // await axios
+    //   .get("http://localhost:3000/api/verifyCode", {
+    //     params: {
+    //       phonenumber: formValues.phone,
+    //       code: otp,
+    //     },
+    //   })
+    //   .then(async (data) => {
+    //     console.log(data);
+    //     if (data.data.status === "approved") {
+    setStatus(true);
+    if (formValues.role == "student") {
+      const newUser = await axios({
+        method: "post",
+        url: "http://localhost:3000/api/student/create",
+        data: {
+          name: formValues.name,
+          email: formValues.email,
+          phone: formValues.phone,
         },
-      })
-      .then(async (data) => {
-        console.log(data);
-        if (data.data.status === "approved") {
-          setStatus(true);
-          if (formValues.role == "student") {
-            const newUser = await axios({
-              method: "post",
-              url: "http://localhost:3000/api/student/create",
-              data: {
-                name: formValues.name,
-                email: formValues.email,
-                phone: formValues.phone,
-              },
-            });
-            if (newUser) {
-              const assignToCourse = await axios({
-                method: "put",
-                url: "http://localhost:3000/api/course/assignStudent",
-                data: {
-                  studentId: newUser.data.id,
-                  courseCode: formValues.course,
-                },
-              });
-              if (assignToCourse) {
-                router.push(`/student/${newUser.data.id}`);
-              }
-            }
-          } else {
-            const newUser = await axios({
-              method: "post",
-              url: "http://localhost:3000/api/teacher/create",
-              data: {
-                name: formValues.name,
-                email: formValues.email,
-                phone: formValues.phone,
-              },
-            });
-            if (newUser) {
-              const assignToCourse = await axios({
-                method: "put",
-                url: "http://localhost:3000/api/course/assignTeacher",
-                data: {
-                  teacherId: newUser.data.id,
-                  courseCode: formValues.course,
-                },
-              });
-              if (assignToCourse) {
-                router.push(`/teacher/${newUser.data.id}`);
-              }
-            }
-          }
-        } else setStatus(false);
-      })
-      .catch((err) => console.log(err));
+      });
+      if (newUser) {
+        const assignToCourse = await axios({
+          method: "put",
+          url: "http://localhost:3000/api/course/assignStudent",
+          data: {
+            studentId: newUser.data.id,
+            courseCode: formValues.course,
+          },
+        });
+        if (assignToCourse) {
+          router.push(`/student/${newUser.data.id}`);
+        }
+      }
+    } else if (formValues.role == "teacher") {
+      const newUser = await axios({
+        method: "post",
+        url: "http://localhost:3000/api/teacher/create",
+        data: {
+          name: formValues.name,
+          email: formValues.email,
+          phone: formValues.phone,
+        },
+      });
+      if (newUser) {
+        console.log(newUser);
+        const assignToCourse = await axios({
+          method: "put",
+          url: "http://localhost:3000/api/course/assignTeacher",
+          data: {
+            teacherId: newUser.data.id,
+            courseCode: formValues.course,
+          },
+        });
+        if (assignToCourse) {
+          console.log(assignToCourse);
+          router.push(`/teacher/${newUser.data.id}`);
+        }
+      }
+    }
+    //   } else setStatus(false);
+    // })
+    // .catch((err) => console.log(err));
   };
 
   const Step1 = () => {
@@ -228,7 +230,6 @@ const Home = () => {
                 className="border-2 w-[40%] mx-auto border-black rounded hover:cursor-pointer hover:bg-[#ff8ba7] hover:text-[#33272a] p-1 my-1"
                 onClick={(e) => {
                   e.preventDefault();
-                  console.log(formValues);
 
                   if (otpShow) {
                     verifyCode();

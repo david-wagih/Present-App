@@ -45,7 +45,7 @@ const Student = (
 
           <div className="flex flex-col m-2">
             <h2 className="my-1">Your Unique QR Code - </h2>
-            <QRCode value="https://nawedali.tech" />
+            <QRCode value={student.name} />
           </div>
         </div>
       </div>

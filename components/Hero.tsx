@@ -47,11 +47,57 @@ const Home = () => {
           code: otp,
         },
       })
-      .then((data) => {
+      .then(async (data) => {
         console.log(data);
         if (data.data.status === "approved") {
           setStatus(true);
-          router.push(`/${formValues.role}`);
+          if (formValues.role == "student") {
+            const newUser = await axios({
+              method: "post",
+              url: "http://localhost:3000/api/student/create",
+              data: {
+                name: formValues.name,
+                email: formValues.email,
+                phone: formValues.phone,
+              },
+            });
+            if (newUser) {
+              const assignToCourse = await axios({
+                method: "put",
+                url: "http://localhost:3000/api/course/assignStudent",
+                data: {
+                  studentId: newUser.data.id,
+                  courseCode: formValues.course,
+                },
+              });
+              if (assignToCourse) {
+                router.push(`/student/${newUser.data.id}`);
+              }
+            }
+          } else {
+            const newUser = await axios({
+              method: "post",
+              url: "http://localhost:3000/api/teacher/create",
+              data: {
+                name: formValues.name,
+                email: formValues.email,
+                phone: formValues.phone,
+              },
+            });
+            if (newUser) {
+              const assignToCourse = await axios({
+                method: "put",
+                url: "http://localhost:3000/api/course/assignTeacher",
+                data: {
+                  teacherId: newUser.data.id,
+                  courseCode: formValues.course,
+                },
+              });
+              if (assignToCourse) {
+                router.push(`/teacher/${newUser.data.id}`);
+              }
+            }
+          }
         } else setStatus(false);
       })
       .catch((err) => console.log(err));

@@ -17,7 +17,7 @@ const createNewUser = async (req: NextApiRequest, res: NextApiResponse) => {
       },
     });
     if (newUser) {
-      res.status(200).json({ message: "User created successfully" });
+      res.status(200).json(newUser);
     } else {
       res.status(400).json({ message: "User not created" });
     }
